@@ -1,7 +1,6 @@
 import colors from "@/lib/theme";
 import { SCREENS, useOnboarding } from "@/providers/onboarding-provider";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
 import { useEffect } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Animated, {
@@ -12,9 +11,8 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function ProgressBar() {
-  const { currentScreen, setCurrentScreen } = useOnboarding();
+  const { currentScreen, goBack } = useOnboarding();
   const insets = useSafeAreaInsets();
-  const router = useRouter();
 
   const progress = useSharedValue(currentScreen / SCREENS.length);
 
@@ -32,12 +30,7 @@ export default function ProgressBar() {
   }));
 
   const handleBack = () => {
-    if (currentScreen === 0) {
-      router.back();
-    } else {
-      setCurrentScreen((prev) => prev - 1);
-      router.back();
-    }
+    goBack();
   };
 
   return (

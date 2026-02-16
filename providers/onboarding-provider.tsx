@@ -41,6 +41,7 @@ interface OnboardingContextProps {
   completeOnboarding: () => Promise<void>;
   resetOnboarding: () => Promise<void>;
   getNext: () => (typeof SCREENS)[number] | undefined;
+  goBack: () => void;
   setCurrentScreen: React.Dispatch<React.SetStateAction<number>>;
   handleOnboardingData: (v: any) => void;
   currentScreen: number;
@@ -101,6 +102,15 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({
     }
   }
 
+  const goBack = () => {
+    const prevIndex = currentScreen - 1;
+    if (prevIndex >= 0) {
+      setCurrentScreen(prevIndex);
+
+      return SCREENS[prevIndex];
+    }
+  };
+
   const handleOnboardingData = (value) => {
     const screenName = SCREENS[currentScreen].name;
     setOnboardingData({ ...onboardingData, [screenName]: value });
@@ -134,6 +144,7 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({
         setCurrentScreen,
         handleOnboardingData,
         currentScreen,
+        goBack,
       }}
     >
       {children}

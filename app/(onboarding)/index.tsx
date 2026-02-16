@@ -12,7 +12,7 @@ function OnboardingContent() {
   const Component = SCREENS[currentScreen].screen;
   return (
     <View style={{ flex: 1, backgroundColor: colors.background }}>
-      <ProgressBar />
+      {SCREENS[currentScreen].name.includes("survey") && <ProgressBar />}
       <Component />
     </View>
   );
