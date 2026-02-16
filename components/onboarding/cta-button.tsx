@@ -1,18 +1,23 @@
 import theme from "@/lib/theme";
 import { useOnboarding } from "@/providers/onboarding-provider";
+import { LinearGradient } from "expo-linear-gradient";
 import { Text, View } from "react-native";
 import PressableScale from "../ui/pressable-scale";
+
 export default function CTAButton({ disabled = false }: { disabled: boolean }) {
   const { getNext } = useOnboarding();
   return (
-    <View
+    <LinearGradient
+      colors={[theme["background"] + "00", theme["background"]]}
+      locations={[0, 0.3]}
       style={{
         position: "absolute",
-        bottom: 30,
+        bottom: 0,
         left: 0,
-        paddingHorizontal: 24,
-
         right: 0,
+        paddingHorizontal: 24,
+        paddingBottom: 30,
+        paddingTop: 20,
       }}
     >
       <PressableScale onPress={getNext}>
@@ -39,6 +44,6 @@ export default function CTAButton({ disabled = false }: { disabled: boolean }) {
           </Text>
         </View>
       </PressableScale>
-    </View>
+    </LinearGradient>
   );
 }
