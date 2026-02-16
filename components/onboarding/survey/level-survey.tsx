@@ -54,7 +54,7 @@ export default function ProfileSurvey() {
       title={title}
       isSurvey={true}
       subtitle={subtitle}
-      selected={selected}
+      data={selected}
     >
       <ScrollView
         style={{ flex: 1 }}

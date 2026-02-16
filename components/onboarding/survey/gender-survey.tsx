@@ -39,7 +39,7 @@ export default function GenderSurvey() {
       subtitle={subtitle}
       isSurvey={true}
       title={title}
-      selected={selected}
+      data={selected}
     >
       <ScrollView
         style={{ flex: 1 }}

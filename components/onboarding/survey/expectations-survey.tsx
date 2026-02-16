@@ -62,7 +62,7 @@ export default function ExpectationsSurvey() {
       title={question.title}
       subtitle={question.subtitle}
       isSurvey={true}
-      selected={selected}
+      data={selected}
     >
       <ScrollView
         style={{ flex: 1 }}

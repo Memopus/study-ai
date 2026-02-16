@@ -50,7 +50,7 @@ export default function SourceSurvey() {
     <OnboardingTemplate
       title="How did you find us?"
       subtitle="This helps us understand how to reach more students like you."
-      selected={selected}
+      data={selected}
       isSurvey={true}
     >
       <ScrollView

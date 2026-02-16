@@ -56,7 +56,7 @@ export default function LimitationsSurvey() {
     <OnboardingTemplate
       title="What's slowing you down?"
       subtitle="We'll help you overcome your biggest challenge."
-      selected={selected}
+      data={selected}
       isSurvey={true}
     >
       <ScrollView

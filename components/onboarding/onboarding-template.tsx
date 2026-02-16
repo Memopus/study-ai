@@ -1,5 +1,6 @@
 import theme from "@/lib/theme";
-import React from "react";
+import { useOnboarding } from "@/providers/onboarding-provider";
+import React, { useEffect } from "react";
 import { View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -8,7 +9,7 @@ import CTAButton from "./cta-button";
 interface Props {
   title: string;
   subtitle: string;
-  selected?: string | string[];
+  data?: string | string[];
   children: React.ReactNode;
   isSurvey?: boolean;
 }
@@ -16,15 +17,22 @@ interface Props {
 export default function OnboardingTemplate({
   title,
   subtitle,
-  selected,
+  data,
   isSurvey = false,
   children,
 }: Props) {
   const { bottom, top } = useSafeAreaInsets();
+  const { handleOnboardingData } = useOnboarding();
 
-  const hasSelection = Array.isArray(selected)
-    ? selected.length > 0
-    : typeof selected === "string" && selected;
+  const hasSelection = Array.isArray(data)
+    ? data.length > 0
+    : typeof data === "string" && data;
+
+  useEffect(() => {
+    if (data) {
+      handleOnboardingData({ value: data, saveInProfile: false });
+    }
+  }, [data]);
 
   return (
     <View

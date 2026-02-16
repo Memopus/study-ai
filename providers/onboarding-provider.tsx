@@ -9,9 +9,16 @@ import GoalSurvey from "@/components/onboarding/survey/goal-survey";
 import ProfileSurvey from "@/components/onboarding/survey/level-survey";
 import LimitationsSurvey from "@/components/onboarding/survey/limitations-survey";
 import SourceSurvey from "@/components/onboarding/survey/source-survey";
+import { SetProperties, TrackEvent } from "@/lib/analytics";
 import { useProfile, useProfileActions } from "@/lib/store/profile";
 import { useRouter } from "expo-router";
-import React, { createContext, ReactNode, useContext, useState } from "react";
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 export const SCREENS = [
   { name: "get-started", screen: GetStartedScreen },
@@ -35,12 +42,15 @@ interface OnboardingContextProps {
   resetOnboarding: () => Promise<void>;
   getNext: () => (typeof SCREENS)[number] | undefined;
   setCurrentScreen: React.Dispatch<React.SetStateAction<number>>;
+  handleOnboardingData: (v: any) => void;
   currentScreen: number;
 }
 
 const OnboardingContext = createContext<OnboardingContextProps | undefined>(
   undefined,
 );
+
+type ScreenName = (typeof SCREENS)[number]["name"];
 
 export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -51,9 +61,32 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({
 
   const profile = useProfile();
 
+  const [onboardingData, setOnboardingData] = useState<
+    Partial<
+      Record<
+        ScreenName,
+        Record<string, { saveInProfile: boolean; value: string }>
+      >
+    >
+  >({});
+
   const { updateProfile } = useProfileActions();
 
   function getNext() {
+    const screenName = SCREENS[currentScreen].name;
+    const { data, saveInProfile } = onboardingData[screenName];
+
+    if (data) {
+      TrackEvent(`Onboarding ${screenName} Completed`, {
+        data,
+      });
+      if (saveInProfile) {
+        SetProperties({ [screenName]: data });
+      }
+    } else {
+      TrackEvent(`Onboarding ${screenName} Completed`);
+    }
+
     const nextScreenIndex = currentScreen + 1;
 
     if (nextScreenIndex < SCREENS.length) {
@@ -65,6 +98,16 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({
       completeOnboarding();
     }
   }
+
+  const handleOnboardingData = (value) => {
+    const screenName = SCREENS[currentScreen].name;
+    setOnboardingData({ ...onboardingData, [screenName]: value });
+  };
+
+  useEffect(() => {
+    const screenName = SCREENS[currentScreen].name;
+    TrackEvent(`Onboarding ${screenName} Viewed`);
+  }, [currentScreen]);
 
   const completeOnboarding = async () => {
     updateProfile({
@@ -87,6 +130,7 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({
         resetOnboarding,
         getNext,
         setCurrentScreen,
+        handleOnboardingData,
         currentScreen,
       }}
     >
