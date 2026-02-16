@@ -74,7 +74,9 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({
 
   function getNext() {
     const screenName = SCREENS[currentScreen].name;
-    const { data, saveInProfile } = onboardingData[screenName];
+    const { data, saveInProfile } = onboardingData[screenName]
+      ? onboardingData[screenName]
+      : { data: null, saveInProfile: false };
 
     if (data) {
       TrackEvent(`Onboarding ${screenName} Completed`, {

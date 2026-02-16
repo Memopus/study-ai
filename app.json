@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "recap",
-    "slug": "recap",
+    "name": "Recap",
+    "slug": "Recap",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/app-icon.png",
@@ -36,9 +36,9 @@
           "image": "./assets/images/splash-screen-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#FF0000",
+          "backgroundColor": "#ffffff",
           "dark": {
-            "backgroundColor": "#FF0000"
+            "backgroundColor": "#ffffff"
           }
         }
       ],
