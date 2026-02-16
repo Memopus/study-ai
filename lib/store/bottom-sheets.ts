@@ -2,7 +2,7 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { createRef, RefObject } from "react";
 import { create } from "zustand";
 
-const BOTTOMSHEET_KEYS = ["add-new"] as const;
+const BOTTOMSHEET_KEYS = ["add-new", "edit-document", "emoji-selector"] as const;
 export type BottomSheetKeys = (typeof BOTTOMSHEET_KEYS)[number];
 
 export type BottomSheetState = {
@@ -25,6 +25,9 @@ const useBottomSheetStore = create<
   }
 >((set, get) => ({
   "add-new": getDefaultBottomSheetState(),
+  "edit-document": getDefaultBottomSheetState(),
+  "emoji-selector": getDefaultBottomSheetState(),
+
   actions: {
     show(key, config) {
       const state = get();

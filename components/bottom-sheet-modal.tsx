@@ -53,6 +53,7 @@ const BottomSheetModal = ({
       android_keyboardInputMode="adjustResize"
       enableDynamicSizing={false}
       enableContentPanningGesture={true}
+      stackBehavior="push"
     >
       {scrollView ? (
         <BottomSheetScrollView
