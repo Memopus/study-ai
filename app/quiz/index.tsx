@@ -1,4 +1,3 @@
-import Header from "@/components/document-page/header";
 import QuizCompleted from "@/components/quiz/quiz-completed";
 import QuizTitle from "@/components/quiz/quiz-title";
 import PressableScale from "@/components/ui/pressable-scale";
@@ -41,35 +40,31 @@ export default function Quiz() {
   const isAnswered = selectedAnswer !== null;
 
   const getOptionStyle = (index: number) => {
-    if (!isAnswered) {
-      return styles.optionButton;
-    }
-
-    if (index === correctAnswer) {
-      return [styles.optionButton, styles.optionButtonCorrect];
-    }
-
-    if (index === selectedAnswer && selectedAnswer !== correctAnswer) {
-      return [styles.optionButton, styles.optionButtonIncorrect];
-    }
-
+    if (!isAnswered) return styles.optionButton;
+    if (index === correctAnswer) return [styles.optionButton, styles.optionButtonCorrect];
+    if (index === selectedAnswer) return [styles.optionButton, styles.optionButtonIncorrect];
     return styles.optionButton;
   };
 
   const getOptionTextStyle = (index: number) => {
-    if (!isAnswered) {
-      return styles.optionText;
-    }
-
-    if (index === correctAnswer) {
-      return [styles.optionText, styles.optionTextCorrect];
-    }
-
-    if (index === selectedAnswer && selectedAnswer !== correctAnswer) {
-      return [styles.optionText, styles.optionTextIncorrect];
-    }
-
+    if (!isAnswered) return styles.optionText;
+    if (index === correctAnswer) return [styles.optionText, styles.optionTextCorrect];
+    if (index === selectedAnswer) return [styles.optionText, styles.optionTextIncorrect];
     return styles.optionText;
+  };
+
+  const getLabelStyle = (index: number) => {
+    if (!isAnswered) return styles.optionLabel;
+    if (index === correctAnswer) return [styles.optionLabel, styles.optionLabelCorrect];
+    if (index === selectedAnswer) return [styles.optionLabel, styles.optionLabelIncorrect];
+    return styles.optionLabel;
+  };
+
+  const getLabelTextStyle = (index: number) => {
+    if (!isAnswered) return styles.optionLabelText;
+    if (index === correctAnswer) return [styles.optionLabelText, styles.optionLabelTextActive];
+    if (index === selectedAnswer) return [styles.optionLabelText, styles.optionLabelTextActive];
+    return styles.optionLabelText;
   };
 
   const handleRestart = () => {
@@ -95,13 +90,14 @@ export default function Quiz() {
 
   return (
     <View style={styles.container}>
-      <Header title="Quiz" showOptions={false} />
-
       <QuizTitle currentQuestion={currentQuestion} />
 
       <View style={styles.quizContainer}>
-        <View>
-          <Text style={styles.questionText}>{question.question}</Text>
+        <View style={styles.questionSection}>
+          <View style={styles.questionCard}>
+            <Text style={styles.questionText}>{question.question}</Text>
+          </View>
+
           <View style={styles.optionsContainer}>
             {question.options.map((option, index) => (
               <PressableScale
@@ -109,11 +105,17 @@ export default function Quiz() {
                 style={getOptionStyle(index)}
                 onPress={() => handleAnswerSelect(index)}
               >
+                <View style={getLabelStyle(index)}>
+                  <Text style={getLabelTextStyle(index)}>
+                    {String.fromCharCode(65 + index)}
+                  </Text>
+                </View>
                 <Text style={getOptionTextStyle(index)}>{option}</Text>
               </PressableScale>
             ))}
           </View>
         </View>
+
         <PressableScale
           style={[
             styles.nextButton,
@@ -122,7 +124,7 @@ export default function Quiz() {
           onPress={handleNext}
         >
           <Text style={styles.nextButtonText}>
-            {currentQuestion < quiz.questions.length - 1 ? "Next" : "Finish"}
+            {currentQuestion < quiz.questions.length - 1 ? "Next Question" : "Finish Quiz"}
           </Text>
         </PressableScale>
       </View>
@@ -138,57 +140,79 @@ const styles = StyleSheet.create({
   quizContainer: {
     flex: 1,
     padding: 20,
+    justifyContent: "space-between",
   },
-  quizTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 10,
-    textAlign: "center",
-    color: theme.foreground,
+  questionSection: {
+    flex: 1,
   },
-
-  questionCounter: {
-    fontSize: 14,
-    color: theme.mutedForeground,
-    textAlign: "center",
+  questionCard: {
+    backgroundColor: theme.card,
+    borderRadius: 16,
+    padding: 24,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: theme.border,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 2,
   },
   questionText: {
     fontSize: 18,
     fontWeight: "700",
-    marginBottom: 30,
     color: theme.foreground,
-    textAlign: "center",
+    lineHeight: 26,
   },
   optionsContainer: {
-    gap: 12,
+    gap: 10,
   },
   optionButton: {
     backgroundColor: theme.card,
-    padding: 16,
-    borderRadius: 8,
+    paddingVertical: 14,
+    paddingHorizontal: 14,
+    borderRadius: 12,
     borderWidth: 2,
     borderColor: theme.border,
-  },
-  optionButtonSelected: {
-    borderColor: theme.primary,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
   },
   optionButtonCorrect: {
-    backgroundColor: "#dcfce7",
+    backgroundColor: "#f0fdf4",
     borderColor: "#22c55e",
-    borderWidth: 2,
   },
   optionButtonIncorrect: {
-    backgroundColor: "#fee2e2",
+    backgroundColor: "#fef2f2",
     borderColor: "#ef4444",
-    borderWidth: 2,
+  },
+  optionLabel: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    backgroundColor: theme.muted,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  optionLabelCorrect: {
+    backgroundColor: "#22c55e",
+  },
+  optionLabelIncorrect: {
+    backgroundColor: "#ef4444",
+  },
+  optionLabelText: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: theme.mutedForeground,
+  },
+  optionLabelTextActive: {
+    color: "#ffffff",
   },
   optionText: {
-    fontSize: 16,
+    fontSize: 15,
     color: theme.foreground,
-  },
-  optionTextSelected: {
-    color: theme.primary,
-    fontWeight: "600",
+    flex: 1,
+    fontWeight: "500",
   },
   optionTextCorrect: {
     color: "#16a34a",
@@ -201,16 +225,17 @@ const styles = StyleSheet.create({
   nextButton: {
     backgroundColor: theme.primary,
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 12,
     alignItems: "center",
-    marginTop: 20,
+    marginBottom: 8,
   },
   nextButtonDisabled: {
-    backgroundColor: theme.border,
+    backgroundColor: theme.muted,
   },
   nextButtonText: {
     color: theme.primaryForeground,
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: "700",
+    letterSpacing: 0.2,
   },
 });

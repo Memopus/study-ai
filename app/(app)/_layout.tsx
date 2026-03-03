@@ -9,7 +9,7 @@ export default function AppLayout() {
 
   useEffect(() => {
     // registerForPushNotificationsAsync();
-    updateProfile({ onboarded: false });
+    // updateProfile({ onboarded: false });
   }, []);
 
   if (!profile.onboarded) {

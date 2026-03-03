@@ -1,5 +1,5 @@
 import theme from "@/lib/theme";
-import { useOnboarding } from "@/providers/onboarding-provider";
+import { SCREENS, useOnboarding } from "@/providers/onboarding-provider";
 import React, { useEffect } from "react";
 import { View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
@@ -22,7 +22,7 @@ export default function OnboardingTemplate({
   children,
 }: Props) {
   const { bottom, top } = useSafeAreaInsets();
-  const { handleOnboardingData } = useOnboarding();
+  const { handleOnboardingData, currentScreen } = useOnboarding();
 
   const hasSelection = Array.isArray(data)
     ? data.length > 0
@@ -38,7 +38,9 @@ export default function OnboardingTemplate({
     <View
       style={{
         flex: 1,
-        paddingTop: top + 30,
+        paddingTop: SCREENS[currentScreen].name.includes("survey")
+          ? top + 30
+          : top,
         paddingBottom: bottom,
         backgroundColor: theme.background,
       }}
