@@ -1,39 +1,50 @@
 import theme from "@/lib/theme";
-import { FileText } from "lucide-react-native";
 import { Text, View } from "react-native";
 
 export default function NoDocument() {
   return (
     <View
       style={{
-        position: "absolute",
-        top: "50%",
+        flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        left: 0,
-        right: 0,
-        height: 120,
-        transform: [{ translateY: -120 / 2 }],
+        paddingHorizontal: 40,
+        gap: 12,
       }}
     >
-      <FileText color={theme.mutedForeground} size={64} strokeWidth={1} />
+      <View
+        style={{
+          width: 72,
+          height: 72,
+          borderRadius: 20,
+          backgroundColor: theme.aiBubble,
+          justifyContent: "center",
+          alignItems: "center",
+          marginBottom: 4,
+        }}
+      >
+        <Text style={{ fontSize: 36 }}>📚</Text>
+      </View>
       <Text
         style={{
-          fontSize: 17,
+          fontSize: 18,
+          fontWeight: "800",
           color: theme.foreground,
-          marginVertical: 10,
-          textAlign: "center",
-          fontWeight: "600",
+          letterSpacing: -0.4,
         }}
       >
         No documents yet
       </Text>
       <Text
         style={{
+          fontSize: 14,
           color: theme.mutedForeground,
+          fontWeight: "500",
+          textAlign: "center",
+          lineHeight: 20,
         }}
       >
-        Start building your knowledge library today
+        Import a PDF, image, or text file to generate your study notes
       </Text>
     </View>
   );

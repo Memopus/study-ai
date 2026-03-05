@@ -20,8 +20,17 @@ export default function FlashCards() {
   return (
     <View style={{ flex: 1, backgroundColor: theme.background }}>
       {/* Header */}
-      <View style={{ paddingHorizontal: 20, paddingTop: top + 8, paddingBottom: 4 }}>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 16 }}>
+      <View
+        style={{ paddingHorizontal: 20, paddingTop: top + 8, paddingBottom: 4 }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 12,
+            marginBottom: 16,
+          }}
+        >
           <PressableScale
             onPress={() => router.back()}
             style={{
@@ -63,21 +72,15 @@ export default function FlashCards() {
             >
               {selectedDocument.name}
             </Text>
-            <Text style={{ fontSize: 13, color: theme.mutedForeground, fontWeight: "500", marginTop: 1 }}>
+            <Text
+              style={{
+                fontSize: 13,
+                color: theme.mutedForeground,
+                fontWeight: "500",
+                marginTop: 1,
+              }}
+            >
               Card {currentIndex + 1} of {total}
-            </Text>
-          </View>
-
-          <View
-            style={{
-              backgroundColor: theme.aiBubble,
-              borderRadius: 20,
-              paddingHorizontal: 12,
-              paddingVertical: 5,
-            }}
-          >
-            <Text style={{ fontSize: 13, fontWeight: "700", color: theme.primary }}>
-              {Math.round(((currentIndex + 1) / total) * 100)}%
             </Text>
           </View>
         </View>
@@ -103,7 +106,13 @@ export default function FlashCards() {
 
       {/* Hint */}
       <View style={{ paddingBottom: bottom + 16, alignItems: "center" }}>
-        <Text style={{ fontSize: 13, fontWeight: "500", color: theme.mutedForeground }}>
+        <Text
+          style={{
+            fontSize: 13,
+            fontWeight: "500",
+            color: theme.mutedForeground,
+          }}
+        >
           Tap to flip · Swipe to navigate
         </Text>
       </View>

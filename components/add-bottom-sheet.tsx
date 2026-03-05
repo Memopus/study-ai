@@ -7,6 +7,7 @@ import * as DocumentPicker from "expo-document-picker";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import {
+  ChevronRight,
   ClipboardType,
   FileText,
   Image as ImageIcon,
@@ -23,55 +24,64 @@ import BottomSheetModal from "./bottom-sheet-modal";
 const OPTIONS = [
   {
     option: "document" as const,
-    title: "Import PDF/Document",
+    title: "PDF or Document",
     icon: FileText,
-    description: "Upload your document",
+    description: "PDF, Word, PowerPoint",
     color: theme.primary,
-    gradient: [theme.primary, theme.secondary],
   },
   {
     option: "text" as const,
-    title: "Import Text/Csv File",
+    title: "Text or CSV",
     icon: ClipboardType,
-    description: "Upload your text document",
-    color: theme["color-3"],
-    gradient: [theme.purple],
+    description: "Plain text or spreadsheet",
+    color: theme.purple,
   },
   {
     option: "image" as const,
-    title: "Import Image",
+    title: "Image",
     icon: ImageIcon,
-    description: "Upload photos or screenshots",
+    description: "Photo or screenshot",
     color: theme.secondary,
-    gradient: [theme.accent],
   },
 ];
 
 export default function AddBottomSheet() {
   return (
-    <BottomSheetModal id="add-new" snapPoint={350}>
-      <View>
-        {/* Options */}
-        <View
+    <BottomSheetModal id="add-new" snapPoint={380}>
+      <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 }}>
+        <Text
           style={{
-            paddingHorizontal: 20,
-            paddingTop: 24,
-            gap: 12,
+            fontSize: 18,
+            fontWeight: "800",
+            color: theme.foreground,
+            letterSpacing: -0.4,
+            marginBottom: 4,
           }}
         >
-          {OPTIONS.map((option, index) => {
-            return (
-              <Element
-                key={index}
-                title={option.title}
-                option={option.option}
-                description={option.description}
-                icon={option.icon}
-                color={option.color}
-                delay={index * 100}
-              />
-            );
-          })}
+          Import Document
+        </Text>
+        <Text
+          style={{
+            fontSize: 13,
+            color: theme.mutedForeground,
+            fontWeight: "500",
+            marginBottom: 20,
+          }}
+        >
+          Choose a file type to get started
+        </Text>
+        <View style={{ gap: 10 }}>
+          {OPTIONS.map((option, index) => (
+            <Element
+              key={index}
+              title={option.title}
+              option={option.option}
+              description={option.description}
+              icon={option.icon}
+              color={option.color}
+              delay={index * 100}
+            />
+          ))}
         </View>
       </View>
     </BottomSheetModal>
@@ -267,61 +277,43 @@ function Element({
         onPress={handlePress}
         style={{
           backgroundColor: theme.card,
-          padding: 8,
-          borderRadius: 20,
+          paddingVertical: 12,
+          paddingHorizontal: 14,
+          borderRadius: 14,
           flexDirection: "row",
           alignItems: "center",
-          gap: 16,
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 4,
-          },
-          shadowOpacity: 0.08,
-          shadowRadius: 12,
-          elevation: 4,
-          borderWidth: 2,
-          borderColor: "transparent",
+          gap: 12,
+          borderWidth: 1,
+          borderColor: theme.border,
         }}
       >
         <View
           style={{
-            width: 56,
-            height: 56,
-            borderRadius: 16,
+            width: 44,
+            height: 44,
+            borderRadius: 12,
             justifyContent: "center",
             alignItems: "center",
             backgroundColor: color + "15",
           }}
         >
-          <Icon color={color} size={28} strokeWidth={2.5} />
+          <Icon color={color} size={22} strokeWidth={2.5} />
         </View>
 
-        <View
-          style={{
-            flex: 1,
-            gap: 4,
-          }}
-        >
+        <View style={{ flex: 1 }}>
           <Text
-            style={{
-              fontSize: 17,
-              fontWeight: "700",
-              color: theme.foreground,
-            }}
+            style={{ fontSize: 15, fontWeight: "700", color: theme.foreground }}
           >
             {title}
           </Text>
           <Text
-            style={{
-              fontSize: 14,
-              color: theme.mutedForeground,
-              fontWeight: "400",
-            }}
+            style={{ fontSize: 12, color: theme.mutedForeground, marginTop: 1 }}
           >
             {description}
           </Text>
         </View>
+
+        <ChevronRight size={16} color={theme.mutedForeground} strokeWidth={2} />
       </Pressable>
     </Animated.View>
   );

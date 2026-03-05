@@ -19,10 +19,10 @@ export default function FloatingButton() {
           position: "absolute",
           bottom: bottom,
           alignSelf: "center",
-          padding: 10,
+          padding: 14,
         }}
       >
-        <Plus size={40} color={theme.primaryForeground} />
+        <Plus size={32} color={theme.primaryForeground} strokeWidth={2.5} />
       </PressableScale>
     </>
   );

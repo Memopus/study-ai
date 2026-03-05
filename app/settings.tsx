@@ -11,7 +11,14 @@ import {
   Star,
   Trash2,
 } from "lucide-react-native";
-import { Alert, Pressable, ScrollView, Text, View } from "react-native";
+import {
+  Alert,
+  Linking,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type SettingsItemProps = {
@@ -216,15 +223,15 @@ export default function SettingsScreen() {
         }}
         showsVerticalScrollIndicator={false}
       >
-        <SettingsSection title="Support & About">
+        <View style={{ gap: 10 }}>
           <SettingsItem
             icon={HelpCircle}
             title="Help & Support"
             subtitle="Get help using the app"
             iconColor={theme.primary}
             iconBg={theme.primary + "15"}
-            onPress={() => showComingSoon("Help & Support")}
-            index={10}
+            onPress={() => Linking.openURL("mailto:contact@gaith.co?subject=Help%20%26%20Support")}
+            index={0}
           />
           <SettingsItem
             icon={Mail}
@@ -232,8 +239,8 @@ export default function SettingsScreen() {
             subtitle="Share your thoughts"
             iconColor={theme.secondary}
             iconBg={theme.secondary + "15"}
-            onPress={() => showComingSoon("Send Feedback")}
-            index={11}
+            onPress={() => Linking.openURL("mailto:contact@gaith.co?subject=Feedback")}
+            index={1}
           />
           <SettingsItem
             icon={Star}
@@ -242,7 +249,7 @@ export default function SettingsScreen() {
             iconColor="#FBBF24"
             iconBg="#FBBF2415"
             onPress={() => showComingSoon("Rate Us")}
-            index={12}
+            index={2}
           />
           <SettingsItem
             icon={Share2}
@@ -251,7 +258,7 @@ export default function SettingsScreen() {
             iconColor={theme.accent}
             iconBg={theme.accent + "15"}
             onPress={() => showComingSoon("Share App")}
-            index={13}
+            index={3}
           />
           <SettingsItem
             icon={Info}
@@ -261,18 +268,15 @@ export default function SettingsScreen() {
             iconBg={theme.muted}
             onPress={() => showComingSoon("About")}
             showChevron={false}
-            index={14}
+            index={4}
           />
-        </SettingsSection>
-
-        {/* Developer Section */}
-        <SettingsSection title="Developer">
           <SettingsItem
             icon={Trash2}
             title="Clear All Data"
-            subtitle="Delete all app data and reset"
+            subtitle="Delete all documents and reset"
             iconColor="#EF4444"
             iconBg="#EF444415"
+            index={5}
             onPress={() =>
               Alert.alert(
                 "Clear All Data",
@@ -290,9 +294,8 @@ export default function SettingsScreen() {
                 ],
               )
             }
-            index={9}
           />
-        </SettingsSection>
+        </View>
       </ScrollView>
     </View>
   );

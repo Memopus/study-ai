@@ -10,20 +10,15 @@ import {
 import { useLoadingProgressActions } from "@/lib/store/loading-progress";
 import theme from "@/lib/theme";
 import { useRouter } from "expo-router";
-import { Brain, FileQuestion, Sparkles } from "lucide-react-native";
-import { useEffect, useState } from "react";
 import {
-  Dimensions,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+  Brain,
+  ChevronRight,
+  FileQuestion,
+  Sparkles,
+} from "lucide-react-native";
+import { useEffect, useState } from "react";
+import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import MarkDown from "react-native-markdown-display";
-
-const { width: SCREEN_WIDTH } = Dimensions.get("window");
-const ACTION_CARD_WIDTH = (SCREEN_WIDTH - 52) / 2; // 20px padding each side + 12px gap
 
 /**
  * Enhanced Markdown Styles
@@ -35,8 +30,6 @@ const markdownStyles = StyleSheet.create({
     color: theme.foreground,
     fontSize: 16,
   },
-
-  // Typography - Hierarchical Spacing
   heading1: {
     color: theme.foreground,
     fontSize: 32,
@@ -52,7 +45,6 @@ const markdownStyles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 12,
     letterSpacing: -0.5,
-    // Modern alternative to full-width border
     borderLeftWidth: 4,
     borderLeftColor: theme.primary,
     paddingLeft: 12,
@@ -68,8 +60,8 @@ const markdownStyles = StyleSheet.create({
   },
   paragraph: {
     color: theme.foreground,
-    fontSize: 17, // Slightly larger for readability
-    lineHeight: 28, // Increased leading for "breathability"
+    fontSize: 17,
+    lineHeight: 28,
     marginBottom: 18,
     opacity: 0.9,
   },
@@ -77,8 +69,6 @@ const markdownStyles = StyleSheet.create({
     fontWeight: "700",
     color: theme.foreground,
   },
-
-  // Specialized Components
   blockquote: {
     backgroundColor: theme.aiBubble,
     borderLeftColor: theme.primary,
@@ -92,13 +82,6 @@ const markdownStyles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 10,
   },
-
-  // Custom "Definition" style (can be applied to specific paragraphs)
-  definitionText: {
-    color: theme.primary,
-    fontWeight: "600",
-  },
-
   code_inline: {
     backgroundColor: theme.muted,
     color: theme.primary,
@@ -109,8 +92,6 @@ const markdownStyles = StyleSheet.create({
     fontWeight: "600",
     fontFamily: Platform.OS === "ios" ? "Menlo" : "monospace",
   },
-
-  // Lists - Improved Alignment
   bullet_list: {
     marginVertical: 12,
     paddingLeft: 8,
@@ -134,12 +115,10 @@ const markdownStyles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 26,
   },
-
-  // Dividers
   hr: {
     backgroundColor: theme.border,
     height: 1,
-    marginVertical: 32,
+    marginVertical: 12,
     width: "100%",
   },
 });
@@ -175,9 +154,7 @@ export default function Document() {
   if (!document) return null;
 
   const handleScroll = (event: any) => {
-    const offsetY = event.nativeEvent.contentOffset.y;
-    // Show title in header when scrolled past the header section (around 90 pixels)
-    setShowTitleInHeader(offsetY > 90);
+    setShowTitleInHeader(event.nativeEvent.contentOffset.y > 90);
   };
 
   return (
@@ -198,26 +175,19 @@ export default function Document() {
         {/* Document Header Section */}
         <View style={styles.headerContainer}>
           <View style={styles.iconBox}>
-            {/* <Sparkles color="white" size={24} /> */}
-            <Text
-              style={{
-                fontSize: 25,
-              }}
-            >
-              {document.emoji}
-            </Text>
+            <Text style={{ fontSize: 36 }}>{document.emoji}</Text>
           </View>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.docName}>{document.name}</Text>
-          </View>
+          <Text style={styles.docName} numberOfLines={2}>{document.name}</Text>
         </View>
 
         {/* Action Buttons Section */}
         <View style={styles.sectionWrapper}>
-          <Text style={styles.sectionLabel}>MEMORY PRACTICE</Text>
-          {ACTIONS.map((action) => (
-            <ActionButton key={action.id} action={action} />
-          ))}
+          <Text style={styles.sectionLabel}>Practice</Text>
+          <View style={{ gap: 10 }}>
+            {ACTIONS.map((action) => (
+              <ActionButton key={action.id} action={action} />
+            ))}
+          </View>
         </View>
 
         {/* Notes Section */}
@@ -280,21 +250,20 @@ function ActionButton({ action }: { action: (typeof ACTIONS)[0] }) {
 
   return (
     <PressableScale onPress={handlePress} style={styles.actionButton}>
-      <View style={styles.actionButtonContent}>
-        <View
-          style={[
-            styles.actionIconWrapper,
-            { backgroundColor: action.color + "15" },
-          ]}
-        >
-          <Icon color={action.color} size={24} strokeWidth={2.5} />
-        </View>
-
-        <View style={styles.actionTextWrapper}>
-          <Text style={styles.actionTitle}>{action.title}</Text>
-          <Text style={styles.actionDesc}>{action.description}</Text>
-        </View>
+      <View
+        style={[
+          styles.actionIconWrapper,
+          { backgroundColor: action.color + "15" },
+        ]}
+      >
+        <Icon color={action.color} size={22} strokeWidth={2.5} />
       </View>
+      <View style={styles.actionTextWrapper}>
+        <Text style={styles.actionTitle}>{action.title}</Text>
+        <Text style={styles.actionDesc}>{action.description}</Text>
+      </View>
+
+      <ChevronRight size={16} color={theme.mutedForeground} strokeWidth={2} />
     </PressableScale>
   );
 }
@@ -309,31 +278,22 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   iconBox: {
-    height: 56,
-    width: 56,
-    backgroundColor: theme.primary,
-    borderRadius: 16,
+    height: 52,
+    width: 52,
+    backgroundColor: theme.aiBubble,
+    borderRadius: 14,
     justifyContent: "center",
     alignItems: "center",
-    // Subtle shadow for depth
-    ...Platform.select({
-      ios: {
-        shadowColor: theme.primary,
-        shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.2,
-        shadowRadius: 10,
-      },
-      android: { elevation: 4 },
-    }),
   },
   docName: {
-    fontSize: 22,
+    flex: 1,
+    fontSize: 20,
     fontWeight: "800",
     color: theme.foreground,
-    letterSpacing: -0.5,
+    letterSpacing: -0.4,
   },
-  docDate: {
-    fontSize: 14,
+  docSubtitle: {
+    fontSize: 13,
     color: theme.mutedForeground,
     fontWeight: "500",
     marginTop: 2,
@@ -343,36 +303,42 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   sectionLabel: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: "700",
     color: theme.mutedForeground,
-    marginBottom: 12,
-    marginLeft: 4,
-    letterSpacing: 1.2,
+    marginBottom: 10,
+    letterSpacing: 0.2,
   },
   actionButton: {
     backgroundColor: theme.card,
-    padding: 16,
-    borderRadius: 20,
-    marginBottom: 12,
+    padding: 14,
+    borderRadius: 16,
     borderWidth: 1,
     borderColor: theme.border,
-  },
-  actionButtonContent: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 14,
+    gap: 12,
   },
   actionIconWrapper: {
-    width: 48,
-    height: 48,
+    width: 44,
+    height: 44,
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
   },
   actionTextWrapper: {
     flex: 1,
-    justifyContent: "center",
+  },
+  readyBadge: {
+    backgroundColor: theme.success + "18",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 20,
+  },
+  readyBadgeText: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: theme.success,
   },
   actionTitle: {
     fontSize: 16,
@@ -395,24 +361,24 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
   },
   notesTitle: {
-    fontSize: 28,
+    fontSize: 22,
     fontWeight: "800",
-    color: theme.primary,
+    color: theme.foreground,
+    letterSpacing: -0.4,
   },
   aiBadge: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 6,
-    backgroundColor: theme.primary + "10",
+    gap: 5,
+    backgroundColor: theme.primary + "12",
     paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 12,
+    paddingVertical: 5,
+    borderRadius: 20,
   },
   aiBadgeText: {
     color: theme.primary,
     fontSize: 11,
     fontWeight: "700",
-    textTransform: "uppercase",
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
 });
