@@ -1,5 +1,6 @@
 import BeforeAfter from "@/components/onboarding/before-after";
 import Commitment from "@/components/onboarding/commitment";
+import FeaturesShowcase from "@/components/onboarding/features";
 import GetStartedScreen from "@/components/onboarding/get-started";
 import NoMoreExcuses from "@/components/onboarding/no-excuses";
 import StudyRetention from "@/components/onboarding/study-retention";
@@ -22,6 +23,7 @@ import React, {
 
 export const SCREENS = [
   { name: "get-started", screen: GetStartedScreen },
+  // { name: "how-it-works", screen: HowItWorks },
   { name: "source-survey", screen: SourceSurvey },
   { name: "gender-survey", screen: GenderSurvey },
   { name: "level-survey", screen: ProfileSurvey },
@@ -29,11 +31,11 @@ export const SCREENS = [
   { name: "limitations-survey", screen: LimitationsSurvey },
   { name: "before-after", screen: BeforeAfter },
   { name: "study-retention", screen: StudyRetention },
-  // "study-methods-survey",
   { name: "expectations-survey", screen: ExpectationsSurvey },
+  { name: "features-showcase", screen: FeaturesShowcase },
+  // { name: "plan-ready", screen: PlanReady },
   { name: "no-more-excuses", screen: NoMoreExcuses },
   { name: "commitment", screen: Commitment },
-  // "flashcards-feature",
 ] as const;
 
 interface OnboardingContextProps {

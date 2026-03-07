@@ -1,7 +1,7 @@
 import OnboardingTemplate from "@/components/onboarding/onboarding-template";
 import Arrow from "@/components/svg/Arrow";
 import theme from "@/lib/theme";
-import { ScrollView, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import Animated, { FadeIn } from "react-native-reanimated";
 
 const title = "Your study life is about to change.";
@@ -30,12 +30,12 @@ function Tag({ label, color }: { label: string; color: string }) {
 export default function BeforeAfter() {
   return (
     <OnboardingTemplate title={title} subtitle={subtitle}>
-      <ScrollView
+      <View
         style={{
           flex: 1,
           paddingHorizontal: 24,
-          paddingVertical: 12,
-          // justifyContent: "center",
+          justifyContent: "center",
+          marginTop: -40,
         }}
       >
         {/* BEFORE Card (tilted) */}
@@ -153,7 +153,7 @@ export default function BeforeAfter() {
             marginBottom: 20,
           }}
         />
-      </ScrollView>
+      </View>
     </OnboardingTemplate>
   );
 }

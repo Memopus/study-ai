@@ -12,6 +12,8 @@ interface Props {
   data?: string | string[];
   children: React.ReactNode;
   isSurvey?: boolean;
+  label?: string;
+  onContinue?: () => void;
 }
 
 export default function OnboardingTemplate({
@@ -20,6 +22,8 @@ export default function OnboardingTemplate({
   data,
   isSurvey = false,
   children,
+  label,
+  onContinue,
 }: Props) {
   const { bottom, top } = useSafeAreaInsets();
   const { handleOnboardingData, currentScreen } = useOnboarding();
@@ -78,7 +82,11 @@ export default function OnboardingTemplate({
 
       {children}
 
-      <CTAButton disabled={isSurvey ? Boolean(!hasSelection) : false} />
+      <CTAButton
+        disabled={isSurvey ? Boolean(!hasSelection) : false}
+        onPress={onContinue}
+        label={label ? label : "Continue"}
+      />
     </View>
   );
 }

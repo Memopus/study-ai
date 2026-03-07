@@ -4,7 +4,15 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Text, View } from "react-native";
 import PressableScale from "../ui/pressable-scale";
 
-export default function CTAButton({ disabled = false }: { disabled: boolean }) {
+export default function CTAButton({
+  disabled = false,
+  onPress,
+  label,
+}: {
+  disabled: boolean;
+  onPress?: () => void;
+  label?: string;
+}) {
   const { getNext } = useOnboarding();
   return (
     <LinearGradient
@@ -20,7 +28,15 @@ export default function CTAButton({ disabled = false }: { disabled: boolean }) {
         paddingTop: 20,
       }}
     >
-      <PressableScale onPress={getNext}>
+      <PressableScale
+        onPress={() => {
+          if (onPress) {
+            onPress();
+          } else {
+            getNext();
+          }
+        }}
+      >
         <View
           style={{
             backgroundColor: !disabled ? theme.primary : theme.muted,
@@ -40,7 +56,7 @@ export default function CTAButton({ disabled = false }: { disabled: boolean }) {
               fontWeight: "600",
             }}
           >
-            Continue
+            {label ? label : "Continue"}
           </Text>
         </View>
       </PressableScale>

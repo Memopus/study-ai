@@ -2,8 +2,8 @@ import OnboardingTemplate from "@/components/onboarding/onboarding-template";
 import Chart from "@/components/onboarding/study-retention/chart";
 import { View } from "react-native";
 
-const subtitle = "Study smarter, not harder.";
 const title = "Turn studying into long-term memory";
+const subtitle = "Study smarter, not harder.";
 
 export default function StudyRetention() {
   return (
@@ -13,7 +13,7 @@ export default function StudyRetention() {
         style={{
           flex: 1,
           justifyContent: "center",
-          marginBottom: 30,
+          paddingBottom: 30,
         }}
       >
         <Chart />

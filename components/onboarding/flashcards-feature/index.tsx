@@ -23,6 +23,12 @@ export default function FlashcardsFeature() {
   const rotation = useSharedValue(0);
   const [isFlipped, setIsFlipped] = useState(false);
 
+  const flipCard = () => {
+    const newValue = isFlipped ? 0 : 180;
+    rotation.set(withTiming(newValue, { duration: 400 }));
+    setIsFlipped((prev) => !prev);
+  };
+
   useEffect(() => {
     // Auto-flip demo after a short delay
     const timer = setTimeout(() => {
@@ -30,12 +36,6 @@ export default function FlashcardsFeature() {
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
-
-  const flipCard = () => {
-    const newValue = isFlipped ? 0 : 180;
-    rotation.set(withTiming(newValue, { duration: 400 }));
-    setIsFlipped((prev) => !prev);
-  };
 
   const frontAnimatedStyle = useAnimatedStyle(() => {
     const rotateY = interpolate(rotation.value, [0, 180], [0, 180]);
