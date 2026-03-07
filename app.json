@@ -11,7 +11,10 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.memooo.recap",
-      "appleTeamId": "CRGS9VC2W7"
+      "appleTeamId": "CRGS9VC2W7",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -61,6 +64,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "dc5835b2-5661-45f9-8e00-428f6d6a61ca"
+      }
     }
   }
 }
