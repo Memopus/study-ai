@@ -1,7 +1,7 @@
 import theme from "@/lib/theme";
 import { Text, View } from "react-native";
 
-export default function NoDocument() {
+export default function NoDocument({ bottomOffset = 0 }: { bottomOffset?: number }) {
   return (
     <View
       style={{
@@ -9,6 +9,7 @@ export default function NoDocument() {
         alignItems: "center",
         justifyContent: "center",
         paddingHorizontal: 40,
+        paddingBottom: bottomOffset,
         gap: 12,
       }}
     >

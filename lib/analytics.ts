@@ -29,3 +29,22 @@ export function SetProperties(properties) {
   }
   mixpanel.getPeople().set(properties);
 }
+
+export function TrackError(
+  error: Error,
+  properties: {
+    context: string;
+    [key: string]: any;
+  },
+) {
+  if (!ANALYTICS_ENABLED) {
+    // console.log("Mixpanel Set Properties:", properties);
+    return;
+  }
+
+  mixpanel.track("Error " + error.message, {
+    stack: error.stack?.toString(),
+    message: error.message,
+    ...properties,
+  });
+}

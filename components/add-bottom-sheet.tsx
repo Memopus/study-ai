@@ -2,6 +2,8 @@ import { getNotes } from "@/lib/lib";
 import { useBottomSheetStoreActions } from "@/lib/store/bottom-sheets";
 import { useDocumentsActions } from "@/lib/store/documents";
 import { useLoadingProgressActions } from "@/lib/store/loading-progress";
+import { useProfile, useProfileActions } from "@/lib/store/profile";
+import { useIsProUser } from "@/lib/store/revenue-cat";
 import theme from "@/lib/theme";
 import * as DocumentPicker from "expo-document-picker";
 import * as ImagePicker from "expo-image-picker";
@@ -109,6 +111,9 @@ function Element({
   const { hide } = useBottomSheetStoreActions();
   const { setStep, reset, setLoadingType } = useLoadingProgressActions();
   const [isLoading, setIsLoading] = useState(false);
+  const profile = useProfile();
+  const { updateProfile } = useProfileActions();
+  const isPro = useIsProUser();
 
   const router = useRouter();
   const animatedStyle = useAnimatedStyle(() => {
@@ -183,6 +188,12 @@ function Element({
   console.log(isLoading);
 
   const handlePress = async () => {
+    if (!isPro && profile.limitReached) {
+      hide("add-new");
+      router.push("/paywall");
+      return;
+    }
+
     setIsLoading(true);
 
     hide("add-new");
@@ -258,6 +269,7 @@ function Element({
         "plain-text",
         note.title,
       );
+      updateProfile({ limitReached: true });
     } catch (error) {
       console.error("Error processing document:", error);
       router.back();

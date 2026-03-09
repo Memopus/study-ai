@@ -3,6 +3,7 @@ import Commitment from "@/components/onboarding/commitment";
 import FeaturesShowcase from "@/components/onboarding/features";
 import GetStartedScreen from "@/components/onboarding/get-started";
 import NoMoreExcuses from "@/components/onboarding/no-excuses";
+import OnboardingPaywall from "@/components/onboarding/paywall";
 import StudyRetention from "@/components/onboarding/study-retention";
 import ExpectationsSurvey from "@/components/onboarding/survey/expectations-survey";
 import GenderSurvey from "@/components/onboarding/survey/gender-survey";
@@ -36,6 +37,7 @@ export const SCREENS = [
   // { name: "plan-ready", screen: PlanReady },
   { name: "no-more-excuses", screen: NoMoreExcuses },
   { name: "commitment", screen: Commitment },
+  { name: "commitment", screen: OnboardingPaywall },
 ] as const;
 
 interface OnboardingContextProps {
@@ -127,7 +129,7 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({
     updateProfile({
       onboarded: true,
     });
-    router.replace("/");
+    router.replace("/(app)");
   };
 
   const resetOnboarding = async () => {

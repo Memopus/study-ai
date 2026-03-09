@@ -1,9 +1,11 @@
+import { useIsProUser } from "@/lib/store/revenue-cat";
 import theme from "@/lib/theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import {
   ArrowLeft,
   ChevronRight,
+  Crown,
   HelpCircle,
   Info,
   Mail,
@@ -141,6 +143,7 @@ function SettingsSection({ title, children }: SettingsSectionProps) {
 export default function SettingsScreen() {
   const router = useRouter();
   const { top, bottom } = useSafeAreaInsets();
+  const isPro = useIsProUser();
 
   const handleBack = () => {
     router.back();
@@ -224,13 +227,29 @@ export default function SettingsScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={{ gap: 10 }}>
+          {!isPro && (
+            <SettingsItem
+              icon={Crown}
+              title="Go Pro"
+              subtitle="Unlock unlimited AI features"
+              iconColor="#FFFFFF"
+              iconBg={theme.primary}
+              onPress={() => router.push("/paywall")}
+              index={-1}
+            />
+          )}
+
           <SettingsItem
             icon={HelpCircle}
             title="Help & Support"
             subtitle="Get help using the app"
             iconColor={theme.primary}
             iconBg={theme.primary + "15"}
-            onPress={() => Linking.openURL("mailto:contact@gaith.co?subject=Help%20%26%20Support")}
+            onPress={() =>
+              Linking.openURL(
+                "mailto:contact@gaith.co?subject=Help%20%26%20Support",
+              )
+            }
             index={0}
           />
           <SettingsItem
@@ -239,7 +258,9 @@ export default function SettingsScreen() {
             subtitle="Share your thoughts"
             iconColor={theme.secondary}
             iconBg={theme.secondary + "15"}
-            onPress={() => Linking.openURL("mailto:contact@gaith.co?subject=Feedback")}
+            onPress={() =>
+              Linking.openURL("mailto:contact@gaith.co?subject=Feedback")
+            }
             index={1}
           />
           <SettingsItem
@@ -260,16 +281,7 @@ export default function SettingsScreen() {
             onPress={() => showComingSoon("Share App")}
             index={3}
           />
-          <SettingsItem
-            icon={Info}
-            title="About"
-            subtitle="Version 1.0.0"
-            iconColor={theme.mutedForeground}
-            iconBg={theme.muted}
-            onPress={() => showComingSoon("About")}
-            showChevron={false}
-            index={4}
-          />
+
           <SettingsItem
             icon={Trash2}
             title="Clear All Data"
@@ -294,6 +306,16 @@ export default function SettingsScreen() {
                 ],
               )
             }
+          />
+          <SettingsItem
+            icon={Info}
+            title="About"
+            subtitle="Version 1.0.0"
+            iconColor={theme.mutedForeground}
+            iconBg={theme.muted}
+            onPress={() => showComingSoon("About")}
+            showChevron={false}
+            index={4}
           />
         </View>
       </ScrollView>

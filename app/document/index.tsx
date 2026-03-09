@@ -3,6 +3,7 @@ import EditBottomSheet from "@/components/edit-bottom-sheet";
 import EmojiBottomSheet from "@/components/emoji-bottom-sheet";
 import PressableScale from "@/components/ui/pressable-scale";
 import { getFlashcards, getQuiz } from "@/lib/lib";
+import { showRateApp } from "@/lib/rate-app";
 import {
   useDocumentsActions,
   useSelectedDocument,
@@ -150,6 +151,10 @@ export default function Document() {
   useEffect(() => {
     if (!document) router.back();
   }, [document, router]);
+
+  useEffect(() => {
+    showRateApp();
+  }, []);
 
   if (!document) return null;
 

@@ -1,5 +1,6 @@
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { useProfile } from "@/lib/store/profile";
+import { useRevenueCatActions } from "@/lib/store/revenue-cat";
 import theme from "@/lib/theme";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import {
@@ -20,9 +21,12 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const profile = useProfile();
+  const revenueCat = useRevenueCatActions();
+
   useQuickActions();
 
   useEffect(() => {
+    revenueCat.initialize();
     SplashScreen.hideAsync();
   }, []);
 
@@ -58,6 +62,13 @@ export default function RootLayout() {
               />
               <Stack.Screen
                 name="loading/index"
+                options={{
+                  headerShown: false,
+                  gestureEnabled: true,
+                }}
+              />
+              <Stack.Screen
+                name="/paywall"
                 options={{
                   headerShown: false,
                   gestureEnabled: true,
