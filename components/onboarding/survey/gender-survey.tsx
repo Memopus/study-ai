@@ -1,7 +1,12 @@
 import OnboardingTemplate from "@/components/onboarding/onboarding-template";
 import SurveyOption from "@/components/onboarding/survey-option";
 import theme from "@/lib/theme";
-import { IconGenderFemale, IconGenderMale } from "@tabler/icons-react-native";
+import { useOnboarding } from "@/providers/onboarding-provider";
+import {
+  IconDots,
+  IconGenderFemale,
+  IconGenderMale,
+} from "@tabler/icons-react-native";
 import { useState } from "react";
 import { ScrollView } from "react-native";
 
@@ -26,7 +31,7 @@ const GENDERS = [
   {
     id: "Other",
     title: "Other",
-    icon: IconGenderFemale,
+    icon: IconDots,
     color: theme["color-3"],
   },
 ];
@@ -34,12 +39,19 @@ const GENDERS = [
 export default function GenderSurvey() {
   const [selected, setSelected] = useState<string | null>(null);
 
+  const { getNext } = useOnboarding();
+
+  const handleContinue = () => {
+    getNext(selected);
+  };
+
   return (
     <OnboardingTemplate
       subtitle={subtitle}
       isSurvey={true}
       title={title}
       data={selected}
+      onContinue={handleContinue}
     >
       <ScrollView
         style={{ flex: 1 }}

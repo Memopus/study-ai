@@ -1,3 +1,4 @@
+import { TrackEvent } from "@/lib/analytics";
 import { useBottomSheetStoreActions } from "@/lib/store/bottom-sheets";
 import {
   useDocumentsActions,
@@ -17,6 +18,10 @@ export default function EditBottomSheet() {
 
   const handleSave = () => {
     editDocument({ name: title }, selectedDocument.file.uri);
+    TrackEvent("Document Edited", {
+      document: selectedDocument.name,
+    });
+
     hide("edit-document");
   };
 

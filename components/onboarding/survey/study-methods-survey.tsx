@@ -1,6 +1,7 @@
 import OnboardingTemplate from "@/components/onboarding/onboarding-template";
 import SurveyOption from "@/components/onboarding/survey-option";
 import theme from "@/lib/theme";
+import { useOnboarding } from "@/providers/onboarding-provider";
 import {
   IconCards,
   IconClipboardCheck,
@@ -54,6 +55,11 @@ const question = {
 export default function StudyMethods() {
   const [selected, setSelected] = useState<string[]>([]);
 
+  const { getNext } = useOnboarding();
+
+  const handleContinue = () => {
+    getNext(selected);
+  };
   const toggleSelection = (id: string) => {
     setSelected((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
@@ -63,7 +69,9 @@ export default function StudyMethods() {
     <OnboardingTemplate
       title={question.title}
       isSurvey={true}
+      data={selected}
       subtitle={question.subtitle}
+      onContinue={handleContinue}
     >
       {/* <Chart /> */}
       <ScrollView

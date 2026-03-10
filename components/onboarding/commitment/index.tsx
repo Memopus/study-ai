@@ -124,7 +124,7 @@ function SignaturePad() {
       <GestureDetector gesture={gesture}>
         <View
           style={{
-            height: 180,
+            height: 200,
             borderRadius: 16,
             borderWidth: 1,
             borderColor: theme.border,
@@ -204,9 +204,13 @@ export default function Commitment() {
             delay={150 + index * 100}
           />
         ))}
-
-        <SignaturePad />
-
+        <View
+          style={{
+            marginTop: 10,
+          }}
+        >
+          <SignaturePad />
+        </View>
         <View style={{ marginBottom: 20 }} />
       </ScrollView>
     </OnboardingTemplate>

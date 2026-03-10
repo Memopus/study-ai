@@ -1,6 +1,7 @@
 import OnboardingTemplate from "@/components/onboarding/onboarding-template";
 import SurveyOption from "@/components/onboarding/survey-option";
 import theme from "@/lib/theme";
+import { useOnboarding } from "@/providers/onboarding-provider";
 import {
   IconBrain,
   IconCertificate,
@@ -49,6 +50,7 @@ const subtitle = "This helps us personalize your learning experience.";
 
 export default function GoalSurvey() {
   const [selected, setSelected] = useState<string[]>([]);
+  const { getNext } = useOnboarding();
 
   const toggleSelection = (id: string) => {
     setSelected((prev) =>
@@ -56,12 +58,16 @@ export default function GoalSurvey() {
     );
   };
 
+  const handleContinue = () => {
+    getNext(selected);
+  };
   return (
     <OnboardingTemplate
       subtitle={subtitle}
       isSurvey={true}
       title={title}
       data={selected}
+      onContinue={handleContinue}
     >
       <ScrollView
         style={{ flex: 1 }}

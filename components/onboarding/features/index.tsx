@@ -75,7 +75,7 @@ export default function FeaturesShowcase() {
 
   return (
     <OnboardingTemplate
-      title="Everything you need to master any subject"
+      title="Built for the way your brain learns"
       subtitle="Three powerful tools built into one app."
       onContinue={handleContinue}
       label={label}

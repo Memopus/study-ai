@@ -1,6 +1,6 @@
 import theme from "@/lib/theme";
 import { SCREENS, useOnboarding } from "@/providers/onboarding-provider";
-import React, { useEffect } from "react";
+import React from "react";
 import { View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -26,17 +26,11 @@ export default function OnboardingTemplate({
   onContinue,
 }: Props) {
   const { bottom, top } = useSafeAreaInsets();
-  const { handleOnboardingData, currentScreen } = useOnboarding();
+  const { currentScreen } = useOnboarding();
 
   const hasSelection = Array.isArray(data)
     ? data.length > 0
     : typeof data === "string" && data;
-
-  useEffect(() => {
-    if (data) {
-      handleOnboardingData({ value: data, saveInProfile: false });
-    }
-  }, [data]);
 
   return (
     <View

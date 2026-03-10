@@ -60,11 +60,13 @@ export default function PaywallButton({
       TrackEvent("Paywall Purchase Failed", {
         error: customerInfoResult.error?.message,
         id,
+        plan: selectedPkg.packageType,
       });
 
       TrackError(customerInfoResult.error, {
         context: "Paywall",
         id,
+        plan: selectedPkg.packageType,
       });
 
       setPurchasing(false);

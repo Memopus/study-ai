@@ -2,7 +2,7 @@ import { Mixpanel } from "mixpanel-react-native";
 
 const trackAutomaticEvents = false; //disable legacy mobile autotrack
 const useNative = false; //disable Native Mode, use Javascript Mode
-const ANALYTICS_ENABLED = false;
+const ANALYTICS_ENABLED = true;
 
 const mixpanel = new Mixpanel(
   process.env.EXPO_PUBLIC_MIXPANEL,

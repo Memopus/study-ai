@@ -1,3 +1,4 @@
+import { TrackEvent } from "@/lib/analytics";
 import { getNotes } from "@/lib/lib";
 import { useBottomSheetStoreActions } from "@/lib/store/bottom-sheets";
 import { useDocumentsActions } from "@/lib/store/documents";
@@ -188,7 +189,7 @@ function Element({
   console.log(isLoading);
 
   const handlePress = async () => {
-    if (!isPro && profile.limitReached) {
+    if (!isPro && profile.limitReached && !__DEV__) {
       hide("add-new");
       router.push("/paywall");
       return;
@@ -228,7 +229,6 @@ function Element({
 
       setStep("generate");
       const note = await getNotes(result.assets[0], option);
-      console.log(note);
       // await new Promise((resolve) => setTimeout(resolve, 2000));
 
       setStep("finalize");
@@ -249,6 +249,10 @@ function Element({
             text: "Add",
             onPress: (customName) => {
               const finalName = customName?.trim() || note.title;
+              TrackEvent("Document Added", {
+                document: finalName,
+                type: option,
+              });
               addDocument({
                 name: finalName,
                 type: option,

@@ -1,10 +1,12 @@
 import OnboardingTemplate from "@/components/onboarding/onboarding-template";
 import SurveyOption from "@/components/onboarding/survey-option";
 import theme from "@/lib/theme";
+import { useOnboarding } from "@/providers/onboarding-provider";
 import {
   IconBackpack,
   IconBriefcase,
   IconBuilding,
+  IconDots,
   IconSchool,
 } from "@tabler/icons-react-native";
 import { useState } from "react";
@@ -38,7 +40,7 @@ const PROFILES = [
   {
     id: "other",
     title: "Other",
-    icon: IconBackpack,
+    icon: IconDots,
     color: theme["color-4"],
   },
 ];
@@ -49,12 +51,18 @@ const subtitle = "This helps us tailor content to your level.";
 export default function ProfileSurvey() {
   const [selected, setSelected] = useState<string | null>(null);
 
+  const { getNext } = useOnboarding();
+
+  const handleContinue = () => {
+    getNext(selected);
+  };
   return (
     <OnboardingTemplate
       title={title}
       isSurvey={true}
       subtitle={subtitle}
       data={selected}
+      onContinue={handleContinue}
     >
       <ScrollView
         style={{ flex: 1 }}

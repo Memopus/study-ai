@@ -1,6 +1,7 @@
 import OnboardingTemplate from "@/components/onboarding/onboarding-template";
 import SurveyOption from "@/components/onboarding/survey-option";
 import theme from "@/lib/theme";
+import { useOnboarding } from "@/providers/onboarding-provider";
 import {
   IconChartBar,
   IconClock,
@@ -51,18 +52,25 @@ const question = {
 
 export default function ExpectationsSurvey() {
   const [selected, setSelected] = useState<string[]>([]);
+  const { getNext } = useOnboarding();
 
   const toggleSelection = (id: string) => {
     setSelected((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
+
+  const handleContinue = () => {
+    getNext(selected);
+  };
+
   return (
     <OnboardingTemplate
       title={question.title}
       subtitle={question.subtitle}
       isSurvey={true}
       data={selected}
+      onContinue={handleContinue}
     >
       <ScrollView
         style={{ flex: 1 }}

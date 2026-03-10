@@ -1,6 +1,7 @@
 import OnboardingTemplate from "@/components/onboarding/onboarding-template";
 import SurveyOption from "@/components/onboarding/survey-option";
 import theme from "@/lib/theme";
+import { useOnboarding } from "@/providers/onboarding-provider";
 import {
   IconAlarm,
   IconBrain,
@@ -47,6 +48,11 @@ const LIMITATIONS = [
 export default function LimitationsSurvey() {
   const [selected, setSelected] = useState<string[]>([]);
 
+  const { getNext } = useOnboarding();
+
+  const handleContinue = () => {
+    getNext(selected);
+  };
   const toggleSelection = (id: string) => {
     setSelected((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
@@ -56,6 +62,7 @@ export default function LimitationsSurvey() {
     <OnboardingTemplate
       title="What's slowing you down?"
       subtitle="We'll help you overcome your biggest challenge."
+      onContinue={handleContinue}
       data={selected}
       isSurvey={true}
     >

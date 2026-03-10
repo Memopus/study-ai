@@ -20,6 +20,7 @@ import Svg, {
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 const AnimatedG = Animated.createAnimatedComponent(G);
 
+
 // Both start at 100 on Day 1, then diverge
 const recapData   = [100, 92, 88, 86, 84, 82, 80];
 const normalData  = [100, 58, 38, 28, 23, 21, 20];
@@ -64,7 +65,6 @@ export default function Chart() {
 
   const lineProgress = useSharedValue(0);
   const areaOpacity  = useSharedValue(0);
-  const dotOpacity   = useSharedValue(0);
 
   useEffect(() => {
     lineProgress.value = withDelay(
@@ -74,10 +74,6 @@ export default function Chart() {
     areaOpacity.value = withDelay(
       DRAW_DELAY + DRAW_DURATION * 0.45,
       withTiming(1, { duration: 600 }),
-    );
-    dotOpacity.value = withDelay(
-      DRAW_DELAY + DRAW_DURATION * 0.88,
-      withTiming(1, { duration: 300 }),
     );
   }, []);
 
@@ -93,8 +89,8 @@ export default function Chart() {
   const normalAreaProps = useAnimatedProps(() => ({
     opacity: areaOpacity.value * 0.3,
   }));
-  const dotGroupProps   = useAnimatedProps(() => ({
-    opacity: dotOpacity.value,
+  const dotGroupProps = useAnimatedProps(() => ({
+    opacity: lineProgress.value,
   }));
 
   const recapPts  = pts(recapData,  W, H, PAD);

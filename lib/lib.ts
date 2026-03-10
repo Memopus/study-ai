@@ -65,10 +65,33 @@ const NotesSchema = z.object({
   emoji: z.string(),
 });
 
+async function detectLanguage(
+  file: DocumentPickerAsset | ImagePickerAsset,
+  type: DocType,
+): Promise<string> {
+  const response = await client.responses.create({
+    model: "gpt-4.1-nano",
+    input: [
+      {
+        role: "user",
+        content: [
+          getContent(file, type),
+          {
+            type: "input_text",
+            text: 'What is the primary language of this document? Reply with ONLY the language name in English, nothing else. Example: "English", "French", "Arabic", "Spanish".',
+          },
+        ],
+      },
+    ],
+  });
+  return (response.output_text ?? "English").trim();
+}
+
 export async function getQuiz(
   file: DocumentPickerAsset | ImagePickerAsset,
   type: DocType,
 ) {
+  const language = await detectLanguage(file, type);
   const response = await client.responses.parse({
     model: "gpt-4.1-nano",
     input: [
@@ -78,7 +101,7 @@ export async function getQuiz(
           getContent(file, type),
           {
             type: "input_text",
-            text: "Generate a quiz with 4 choices questions from the PDF above. Return the result as a structured JSON object. the correct answer should be the index of the correct one ",
+            text: `Generate a quiz with 4-choice questions from the document above. Generate as many questions as the content warrants — minimum 3, maximum 10. For short or simple documents use fewer questions; for detailed or long documents use more. Return the result as a structured JSON object. The correct answer should be the index of the correct option. Write all questions, options, and explanations in ${language}.`,
           },
         ],
       },
@@ -95,6 +118,7 @@ export async function getFlashcards(
   file: DocumentPickerAsset | ImagePickerAsset,
   type: DocType,
 ) {
+  const language = await detectLanguage(file, type);
   const response = await client.responses.parse({
     model: "gpt-4.1-nano",
     input: [
@@ -102,10 +126,9 @@ export async function getFlashcards(
         role: "user",
         content: [
           getContent(file, type),
-
           {
             type: "input_text",
-            text: "Generate flashcards from the PDF above. Return the result as a structured JSON object.",
+            text: `Generate flashcards from the document above. Return the result as a structured JSON object. Write all questions and answers in ${language}.`,
           },
         ],
       },
@@ -122,6 +145,7 @@ export async function getNotes(
   file: DocumentPickerAsset | ImagePickerAsset,
   type: DocType,
 ) {
+  const language = await detectLanguage(file, type);
   const response = await client.responses.parse({
     model: "gpt-4.1-nano",
     input: [
@@ -173,7 +197,7 @@ Follow this exact layout:
 
 7. --- between major ## sections to visually separate them
 
-8. ## Key Takeaways at the end — 4–6 punchy bullets summarizing the most important things to remember
+8. End with exactly ONE summary section — 4–6 punchy bullets. Do NOT include two summary sections.
 
 ═══════════════════════════════
 CONTENT QUALITY
@@ -192,6 +216,9 @@ MOBILE FORMATTING
 - Prefer bullets over prose for lists of facts
 - Each bullet should be a complete thought, not a fragment
 - Avoid nesting bullets more than one level deep
+
+LANGUAGE RULE — CRITICAL:
+Write ALL notes, headings, bullets, and section titles in ${language}. Never mix languages. Only the JSON keys ("title", "markdown", "emoji") stay in English.
 
 Now generate comprehensive study notes based on the provided document.
                 `,

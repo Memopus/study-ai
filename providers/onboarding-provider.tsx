@@ -44,10 +44,9 @@ interface OnboardingContextProps {
   isOnboardingCompleted: boolean;
   completeOnboarding: () => Promise<void>;
   resetOnboarding: () => Promise<void>;
-  getNext: () => (typeof SCREENS)[number] | undefined;
+  getNext: (data?: any) => (typeof SCREENS)[number] | undefined;
   goBack: () => void;
   setCurrentScreen: React.Dispatch<React.SetStateAction<number>>;
-  handleOnboardingData: (v: any) => void;
   currentScreen: number;
 }
 
@@ -55,7 +54,7 @@ const OnboardingContext = createContext<OnboardingContextProps | undefined>(
   undefined,
 );
 
-type ScreenName = (typeof SCREENS)[number]["name"];
+// type ScreenName = (typeof SCREENS)[number]["name"];
 
 export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -66,30 +65,17 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({
 
   const profile = useProfile();
 
-  const [onboardingData, setOnboardingData] = useState<
-    Partial<
-      Record<
-        ScreenName,
-        Record<string, { saveInProfile: boolean; value: string }>
-      >
-    >
-  >({});
-
   const { updateProfile } = useProfileActions();
 
-  function getNext() {
+  function getNext(data) {
     const screenName = SCREENS[currentScreen].name;
-    const { data, saveInProfile } = onboardingData[screenName]
-      ? onboardingData[screenName]
-      : { data: null, saveInProfile: false };
 
     if (data) {
       TrackEvent(`Onboarding ${screenName} Completed`, {
         data,
       });
-      if (saveInProfile) {
-        SetProperties({ [screenName]: data });
-      }
+
+      SetProperties({ [screenName]: data });
     } else {
       TrackEvent(`Onboarding ${screenName} Completed`);
     }
@@ -115,20 +101,13 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  const handleOnboardingData = (value) => {
-    const screenName = SCREENS[currentScreen].name;
-    setOnboardingData({ ...onboardingData, [screenName]: value });
-  };
-
   useEffect(() => {
     const screenName = SCREENS[currentScreen].name;
     TrackEvent(`Onboarding ${screenName} Viewed`);
   }, [currentScreen]);
 
   const completeOnboarding = async () => {
-    updateProfile({
-      onboarded: true,
-    });
+    updateProfile({ onboarded: true });
     router.replace("/(app)");
   };
 
@@ -146,7 +125,6 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({
         resetOnboarding,
         getNext,
         setCurrentScreen,
-        handleOnboardingData,
         currentScreen,
         goBack,
       }}

@@ -2,6 +2,7 @@ import Header from "@/components/document-page/header";
 import EditBottomSheet from "@/components/edit-bottom-sheet";
 import EmojiBottomSheet from "@/components/emoji-bottom-sheet";
 import PressableScale from "@/components/ui/pressable-scale";
+import { TrackEvent } from "@/lib/analytics";
 import { getFlashcards, getQuiz } from "@/lib/lib";
 import { showRateApp } from "@/lib/rate-app";
 import {
@@ -182,7 +183,9 @@ export default function Document() {
           <View style={styles.iconBox}>
             <Text style={{ fontSize: 36 }}>{document.emoji}</Text>
           </View>
-          <Text style={styles.docName} numberOfLines={2}>{document.name}</Text>
+          <Text style={styles.docName} numberOfLines={2}>
+            {document.name}
+          </Text>
         </View>
 
         {/* Action Buttons Section */}
@@ -239,9 +242,17 @@ function ActionButton({ action }: { action: (typeof ACTIONS)[0] }) {
 
     if (action.id === "quiz") {
       const quiz = await getQuiz(document.file, document.type);
+      TrackEvent("Quiz Created", {
+        document: document.name,
+        type: document.type,
+      });
       editDocument({ quiz }, document.file.uri);
     } else if (action.id === "flashcards") {
       const flashcards = await getFlashcards(document.file, document.type);
+      TrackEvent("Flashcards Created", {
+        document: document.name,
+        type: document.type,
+      });
       editDocument({ ...flashcards }, document.file.uri);
     }
 

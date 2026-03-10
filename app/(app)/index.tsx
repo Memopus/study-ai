@@ -2,6 +2,7 @@ import AddBottomSheet from "@/components/add-bottom-sheet";
 import FloatingButton from "@/components/floating-button";
 import DocumentCard from "@/components/home/document-card";
 import NoDocument from "@/components/home/no-document";
+import { TrackEvent } from "@/lib/analytics";
 import { useDocuments } from "@/lib/store/documents";
 import { useIsProUser } from "@/lib/store/revenue-cat";
 import theme from "@/lib/theme";
@@ -59,7 +60,10 @@ export default function HomeScreen() {
 
       {!isPro && (
         <Pressable
-          onPress={() => router.push("/paywall")}
+          onPress={() => {
+            router.push("/paywall");
+            TrackEvent("Upgrade to Pro Clicked");
+          }}
           style={({ pressed }) => ({
             marginHorizontal: 20,
             marginBottom: 20,
@@ -123,12 +127,17 @@ export default function HomeScreen() {
       {documents.length === 0 ? (
         <NoDocument bottomOffset={bottom + 200} />
       ) : (
-        <ScrollView style={{ paddingHorizontal: 20 }}>
-          <View style={{ gap: 12 }}>
-            {documents.map((document, index) => (
-              <DocumentCard key={index} document={document} index={index} />
-            ))}
-          </View>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+            paddingBottom: bottom + 100,
+            gap: 12,
+          }}
+        >
+          {documents.map((document, index) => (
+            <DocumentCard key={index} document={document} index={index} />
+          ))}
         </ScrollView>
       )}
 

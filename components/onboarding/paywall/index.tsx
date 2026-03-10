@@ -1,7 +1,8 @@
 import Paywall from "@/components/paywall/paywall";
 import { useOnboarding } from "@/providers/onboarding-provider";
 import { X } from "lucide-react-native";
-import { Pressable, View } from "react-native";
+import { Pressable } from "react-native";
+import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function OnboardingPaywall() {
@@ -9,10 +10,9 @@ export default function OnboardingPaywall() {
   const { completeOnboarding } = useOnboarding();
 
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
+    <Animated.View
+      entering={FadeInDown.duration(400).delay(100)}
+      style={{ flex: 1 }}
     >
       <Pressable
         onPress={completeOnboarding}
@@ -33,10 +33,12 @@ export default function OnboardingPaywall() {
         <X color="#888" size={18} strokeWidth={2.5} />
       </Pressable>
       <Paywall
-        onPurchaseComplete={completeOnboarding}
+        onPurchaseComplete={() => {
+          completeOnboarding();
+        }}
         onPurchaseCancelled={() => {}}
         onRestoreCompleted={completeOnboarding}
       />
-    </View>
+    </Animated.View>
   );
 }

@@ -1,10 +1,12 @@
 import OnboardingTemplate from "@/components/onboarding/onboarding-template";
 import SourceOption from "@/components/onboarding/survey-option";
 import theme from "@/lib/theme";
+import { useOnboarding } from "@/providers/onboarding-provider";
 import {
   IconBrandAppstore,
   IconBrandInstagram,
   IconBrandTiktok,
+  IconDots,
   IconUsersGroup,
 } from "@tabler/icons-react-native";
 import { useState } from "react";
@@ -38,19 +40,25 @@ const SOURCES = [
   {
     id: "other",
     title: "Other",
-    icon: IconBrandAppstore,
+    icon: IconDots,
     color: theme["color-4"],
   },
 ];
 
 export default function SourceSurvey() {
   const [selected, setSelected] = useState<string | null>(null);
+  const { getNext } = useOnboarding();
+
+  const handleContinue = () => {
+    getNext(selected);
+  };
 
   return (
     <OnboardingTemplate
       title="How did you find us?"
       subtitle="This helps us understand how to reach more students like you."
       data={selected}
+      onContinue={handleContinue}
       isSurvey={true}
     >
       <ScrollView

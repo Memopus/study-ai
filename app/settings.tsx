@@ -1,3 +1,4 @@
+import { TrackEvent } from "@/lib/analytics";
 import { useIsProUser } from "@/lib/store/revenue-cat";
 import theme from "@/lib/theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -234,7 +235,10 @@ export default function SettingsScreen() {
               subtitle="Unlock unlimited AI features"
               iconColor="#FFFFFF"
               iconBg={theme.primary}
-              onPress={() => router.push("/paywall")}
+              onPress={() => {
+                router.push("/paywall");
+                TrackEvent("Settings Paywall Clicked");
+              }}
               index={-1}
             />
           )}
@@ -245,11 +249,13 @@ export default function SettingsScreen() {
             subtitle="Get help using the app"
             iconColor={theme.primary}
             iconBg={theme.primary + "15"}
-            onPress={() =>
+            onPress={() => {
               Linking.openURL(
                 "mailto:contact@gaith.co?subject=Help%20%26%20Support",
-              )
-            }
+              );
+
+              TrackEvent("Settings Help & Support Clicked");
+            }}
             index={0}
           />
           <SettingsItem
@@ -258,9 +264,10 @@ export default function SettingsScreen() {
             subtitle="Share your thoughts"
             iconColor={theme.secondary}
             iconBg={theme.secondary + "15"}
-            onPress={() =>
-              Linking.openURL("mailto:contact@gaith.co?subject=Feedback")
-            }
+            onPress={() => {
+              Linking.openURL("mailto:contact@gaith.co?subject=Feedback");
+              TrackEvent("Settings Share your Thoughts Clicked");
+            }}
             index={1}
           />
           <SettingsItem
@@ -269,7 +276,10 @@ export default function SettingsScreen() {
             subtitle="Enjoying the app? Leave a review!"
             iconColor="#FBBF24"
             iconBg="#FBBF2415"
-            onPress={() => showComingSoon("Rate Us")}
+            onPress={() => {
+              showComingSoon("Rate Us");
+              TrackEvent("Settings Rate Us Clicked");
+            }}
             index={2}
           />
           <SettingsItem
@@ -278,7 +288,10 @@ export default function SettingsScreen() {
             subtitle="Tell your friends about us"
             iconColor={theme.accent}
             iconBg={theme.accent + "15"}
-            onPress={() => showComingSoon("Share App")}
+            onPress={() => {
+              showComingSoon("Share App");
+              TrackEvent("Settings Share App Clicked");
+            }}
             index={3}
           />
 
@@ -300,6 +313,7 @@ export default function SettingsScreen() {
                     style: "destructive",
                     onPress: async () => {
                       await AsyncStorage.clear();
+                      TrackEvent("Data Cleared");
                       Alert.alert("Success", "All data has been cleared.");
                     },
                   },
@@ -313,7 +327,7 @@ export default function SettingsScreen() {
             subtitle="Version 1.0.0"
             iconColor={theme.mutedForeground}
             iconBg={theme.muted}
-            onPress={() => showComingSoon("About")}
+            // onPress={() => showComingSoon("About")}
             showChevron={false}
             index={4}
           />

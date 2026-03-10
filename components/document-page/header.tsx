@@ -1,3 +1,4 @@
+import { TrackEvent } from "@/lib/analytics";
 import { useBottomSheetStoreActions } from "@/lib/store/bottom-sheets";
 import {
   useDocumentsActions,
@@ -121,6 +122,7 @@ function MenuButton() {
   const handleDelete = () => {
     setIsMenuVisible(false);
     deleteDocument(selectedDocument.file.uri);
+    TrackEvent("Document Deleted", { document: selectedDocument.name });
     router.back();
   };
 
